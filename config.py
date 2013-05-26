@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 # Note that since qtile configs are just python scripts, you can check for
 # syntax and runtime errors by just running this file as is from the command
 # line, e.g.:
@@ -8,6 +11,55 @@ from libqtile.manager import Key, Screen, Group, Drag, Click
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 
+##-> Theme + widget options
+class Theme(object):
+	bar = {
+		'size': 24,
+		'background': '15181a',
+	}
+	widget = {
+		'font': 'Open Sans',
+		'fontsize': 10,
+		'background': bar['background'],
+		'foreground': 'eeeeee',
+	}
+	graph = {
+		'background': '000000',
+		'border_width': 0,
+		'border_color': '000000',
+		'line_width': 1,
+		'margin_x': 1,
+		'margin_y': 1,
+		'width': 50,
+	}
+
+	groupbox = widget.copy()
+	groupbox.update({
+		'padding': 2,
+		'borderwidth': 3,
+	})
+
+	sep = {
+		'background': bar['background'],
+		'foreground': '444444',
+		'height_percent': 75,
+	}
+
+	systray = widget.copy()
+	systray.update({
+		'icon_size: 16'
+		'padding': 3,
+	})
+
+	battery = widget.copy()
+	battery_text = battery.copy()
+	battery_text.update({
+		'charge_char': '↑ ',
+		'discharge_char': '↓ ',
+		'format': '{char}{hour:d}:{min:02d}',
+        })
+
+
 # The screens variable contains information about what bars are drawn where on
 # each screen. If you have multiple screens, you'll need to construct multiple
 # Screen objects, each with whatever widgets you want.
@@ -15,21 +67,23 @@ from libqtile import layout, bar, widget, hook
 # Below is a screen with a top bar that contains several basic qtile widgets.
 screens = [Screen(top = bar.Bar([
         # This is a list of our virtual desktops.
-        widget.GroupBox(urgent_alert_method='text'),
+        widget.GroupBox(**Theme.groupbox),
 
         # A prompt for spawning processes or switching groups. This will be
         # invisible most of the time.
         widget.Prompt(),
 
+	widget.CPUGraph(graph_color='18BAEB', fill_color='1667EB.3', **Theme.graph),
+	widget.MemoryGraph(graph_color='00FE81', fill_color='00B25B.3', **Theme.graph),
+	widget.SwapGraph(graph_color='5E0101', fill_color='FF5656', **Theme.graph),
+	widget.NetGraph(graph_color='ffff00', fill_color='4d4d00', interface='wlan0',  **Theme.graph),
+
         # Current window name.
-        widget.WindowName(),
+        widget.WindowName(**Theme.widget),
         widget.Volume(),
-        widget.Battery(
-            energy_now_file='charge_now',
-            energy_full_file='charge_full',
-            power_now_file='current_now',
-        ),
-        widget.Systray(),
+        #widget.BatteryIcon(**Theme.battery),
+	widget.Battery(**Theme.battery_text),
+        widget.Systray(**Theme.systray),
         widget.Clock('%Y-%m-%d %a %I:%M %p'),
     ], 20)) # our bar is 30px high
 ]
@@ -105,10 +159,31 @@ for i in ["a", "s", "d", "f", "u", "i", "o", "p"]:
 		Key([mod, "mod1"], i, lazy.window.togroup(i))
 	)
 
-# Two basic layouts.
+#   Layouts Config
+# -------------------
+
+# Layout Theme
+layout_theme = {
+	"border_width": 2,
+	"margin": 3,
+	"border_focus": "#005F0C",
+	"border_normal": "#555555"
+}
+
 layouts = [
-	layout.Stack(stacks=2, border_width=1),
-	layout.Max(),
+	layout.Max(**layout_theme),
+	layout.RatioTile(**layout_theme),
+	layout.Stack(stacks=2, **layout_theme),
+	layout.Tile(shift_windows=True, **layout_theme),
 ]
 
-# vim: tabstop=4 shiftwidth=4 expandtab
+
+# Automatically float these types. This overrides the default behavior (which
+# is to also float utility types), but the default behavior breaks our fancy
+# gimp slice layout specified later on.
+floating_layout = layout.Floating(auto_float_types=[
+	"notification",
+	"toolbar",
+	"splash",
+	"dialog",
+], **layout_theme)
