@@ -52,12 +52,18 @@ class Theme(object):
 	})
 
 	battery = widget.copy()
-	battery_text = battery.copy()
+	battery_text = widget.copy()
 	battery_text.update({
 		'charge_char': '↑ ',
 		'discharge_char': '↓ ',
 		'format': '{char}{hour:d}:{min:02d}',
         })
+
+	clock = widget.copy()
+	clock.update({
+	#	'format': ,
+		'foreground': 'ffffff',
+	})
 
 
 # The screens variable contains information about what bars are drawn where on
@@ -76,16 +82,17 @@ screens = [Screen(top = bar.Bar([
 	widget.CPUGraph(graph_color='18BAEB', fill_color='1667EB.3', **Theme.graph),
 	widget.MemoryGraph(graph_color='00FE81', fill_color='00B25B.3', **Theme.graph),
 	widget.SwapGraph(graph_color='5E0101', fill_color='FF5656', **Theme.graph),
-	widget.NetGraph(graph_color='ffff00', fill_color='4d4d00', interface='wlan0',  **Theme.graph),
+	# NetGraph not in current version of qtile ...?
+	#widget.NetGraph(graph_color='ffff00', fill_color='4d4d00', interface='wlan0',  **Theme.graph),
 
         # Current window name.
         widget.WindowName(**Theme.widget),
         widget.Volume(),
         #widget.BatteryIcon(**Theme.battery),
-	widget.Battery(**Theme.battery_text),
+	widget.Battery(**Theme.battery),
         widget.Systray(**Theme.systray),
-        widget.Clock('%Y-%m-%d %a %I:%M %p'),
-    ], 20)) # our bar is 30px high
+        widget.Clock('%Y-%m-%d %a %I:%M %p', **Theme.clock),
+    ], 20))
 ]
 
 # Super_L (the Windows key) is typically bound to mod4 by default, so we use
@@ -117,7 +124,7 @@ keys = [
 	# start specific apps
 	Key([mod], "n",              lazy.spawn("firefox")),
 	Key([mod], "c",              lazy.spawn("google-chrome")),
-	Key([mod], "Return",         lazy.spawn("xterm")),
+	Key([mod], "Return",         lazy.spawn("gnome-terminal")),
 
 	# Change the volume if your keyboard has special volume keys.
 	Key(
