@@ -36,7 +36,7 @@ class Theme(object):
 	groupbox = widget.copy()
 	groupbox.update({
 		'padding': 2,
-		'borderwidth': 3,
+		'borderwidth': 4,
 	})
 
 	sep = {
@@ -89,7 +89,7 @@ screens = [Screen(top = bar.Bar([
         widget.WindowName(**Theme.widget),
         widget.Volume(),
         #widget.BatteryIcon(**Theme.battery),
-	widget.Battery(**Theme.battery),
+	#widget.Battery(**Theme.battery),
         widget.Systray(**Theme.systray),
         widget.Clock('%Y-%m-%d %a %I:%M %p', **Theme.clock),
     ], 20))
@@ -171,7 +171,7 @@ for i in ["a", "s", "d", "f", "u", "i", "o", "p"]:
 
 # Layout Theme
 layout_theme = {
-	"border_width": 2,
+	"border_width": 3,
 	"margin": 3,
 	"border_focus": "#005F0C",
 	"border_normal": "#555555"
