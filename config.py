@@ -48,7 +48,7 @@ class Theme(object):
 	systray = widget.copy()
 	systray.update({
 		'icon_size: 16'
-		'padding': 3,
+		'padding': 2,
 	})
 
 	battery = widget.copy()
@@ -61,8 +61,8 @@ class Theme(object):
 
 	clock = widget.copy()
 	clock.update({
-	#	'format': ,
-		'foreground': 'ffffff',
+		'fontsize': 10,
+		'foreground': 'eeeeee',
 	})
 
 
