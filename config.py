@@ -86,8 +86,9 @@ screens = [Screen(top = bar.Bar([
 	#widget.NetGraph(graph_color='ffff00', fill_color='4d4d00', interface='wlan0',  **Theme.graph),
 
         # Current window name.
+	widget.CurrentLayout(**Theme.widget),
         widget.WindowName(**Theme.widget),
-        widget.Volume(),
+        #widget.Volume(),
         #widget.BatteryIcon(**Theme.battery),
 	#widget.Battery(**Theme.battery),
         widget.Systray(**Theme.systray),
@@ -107,6 +108,7 @@ keys = [
 	# sometimes, or on system upgrades). This way you can still log back out
 	# and in gracefully.
 	Key(["shift", "mod1"], "q",  lazy.shutdown()),
+	Key([mod, "shift"], "r",     lazy.restart()),
 
 	Key([mod], "k",              lazy.layout.down()),
 	Key([mod], "j",              lazy.layout.up()),
@@ -122,8 +124,9 @@ keys = [
 	Key([mod], "g",              lazy.switchgroup()),
 
 	# start specific apps
-	Key([mod], "n",              lazy.spawn("firefox")),
+	Key([mod], "f",              lazy.spawn("firefox")),
 	Key([mod], "c",              lazy.spawn("google-chrome")),
+	Key([mod], "e",              lazy.spawn("emacs")),	    
 	Key([mod], "Return",         lazy.spawn("gnome-terminal")),
 
 	# Change the volume if your keyboard has special volume keys.
@@ -156,14 +159,13 @@ mouse = [
 
 # Next, we specify group names, and use the group name list to generate an appropriate
 # set of bindings for group switching.
-groups = []
-for i in ["a", "s", "d", "f", "u", "i", "o", "p"]:
-	groups.append(Group(i))
+groups = [Group(str(i)) for i in (1, 2, 3, 4, 5)]
+for i in groups:
 	keys.append(
-		Key([mod], i, lazy.group[i].toscreen())
+		Key([mod], i.name, lazy.group[i.name].toscreen())
 	)
 	keys.append(
-		Key([mod, "mod1"], i, lazy.window.togroup(i))
+		Key([mod, "mod1"], i.name, lazy.window.togroup(i.name))
 	)
 
 #   Layouts Config
@@ -171,7 +173,7 @@ for i in ["a", "s", "d", "f", "u", "i", "o", "p"]:
 
 # Layout Theme
 layout_theme = {
-	"border_width": 3,
+	"border_width": 4,
 	"margin": 3,
 	"border_focus": "#005F0C",
 	"border_normal": "#555555"
