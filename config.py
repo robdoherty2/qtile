@@ -30,13 +30,13 @@ class Theme(object):
 		'line_width': 1,
 		'margin_x': 1,
 		'margin_y': 1,
-		'width': 50,
+		'width': 100,
 	}
 
 	groupbox = widget.copy()
 	groupbox.update({
 		'padding': 2,
-		'borderwidth': 4,
+		'borderwidth': 2,
 	})
 
 	sep = {
