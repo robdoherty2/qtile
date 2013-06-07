@@ -30,13 +30,13 @@ class Theme(object):
 		'line_width': 1,
 		'margin_x': 1,
 		'margin_y': 1,
-		'width': 100,
+		'width': 200,
 	}
 
 	groupbox = widget.copy()
 	groupbox.update({
 		'padding': 2,
-		'borderwidth': 2,
+		'borderwidth': 3,
 	})
 
 	sep = {
@@ -59,9 +59,14 @@ class Theme(object):
 		'format': '{char}{hour:d}:{min:02d}',
         })
 
+	window_name = widget.copy()
+	window_name.update({
+		'fontsize': 12,
+	})
+
 	clock = widget.copy()
 	clock.update({
-		'fontsize': 10,
+		'fontsize': 12,
 		'foreground': 'eeeeee',
 	})
 
@@ -87,7 +92,7 @@ screens = [Screen(top = bar.Bar([
 
         # Current window name.
 	widget.CurrentLayout(**Theme.widget),
-        widget.WindowName(**Theme.widget),
+        widget.WindowName(**Theme.window_name),
         #widget.Volume(),
         #widget.BatteryIcon(**Theme.battery),
 	#widget.Battery(**Theme.battery),
