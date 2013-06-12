@@ -113,8 +113,12 @@ keys = [
 	# sometimes, or on system upgrades). This way you can still log back out
 	# and in gracefully.
 	Key(["shift", "mod1"], "q",  lazy.shutdown()),
+	# shutdown
+	Key(["mod1", "shift"], "q", lazy.spawn('sudo shutdown -h 0')),
+	# restart qtile
 	Key([mod, "shift"], "r",     lazy.restart()),
 
+	# layout/tile interactions
 	Key([mod], "k",              lazy.layout.down()),
 	Key([mod], "j",              lazy.layout.up()),
 	Key([mod], "h",              lazy.layout.previous()),
@@ -123,6 +127,12 @@ keys = [
 	Key([mod, "shift"], "Return",lazy.layout.toggle_split()),
 	Key(["mod1"], "Tab",         lazy.nextlayout()),
 	Key([mod], "x",              lazy.window.kill()),
+
+	# inc ratio of current window
+	Key(["mod1"], "e", lazy.layout.increase_ratio()),
+
+	# dec ratio of current window
+	Key(["mod1"], "q", lazy.layout.decrease_ratio()),
 
 	# interact with prompts
 	Key([mod], "r",              lazy.spawncmd()),
@@ -170,7 +180,7 @@ for i in groups:
 		Key([mod], i.name, lazy.group[i.name].toscreen())
 	)
 	keys.append(
-		Key([mod, "mod1"], i.name, lazy.window.togroup(i.name))
+		Key([mod, "shift"], i.name, lazy.window.togroup(i.name))
 	)
 
 #   Layouts Config
