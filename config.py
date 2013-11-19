@@ -11,6 +11,35 @@ from libqtile.manager import Key, Screen, Group, Drag, Click
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 
+'''
+import subprocess
+import os
+
+@hook.subscribe.startup
+def dbus_register():
+	"""
+	registers Qtile with gnome-session. Without it, a 
+	°Something has gone wrong!² message shows up a short 
+	while after logging in. dbus-send must be on your $PATH.
+	"""
+	x = os.environ['DESKTOP_AUTOSTART_ID']
+	subprocess.Popen(['dbus-send',
+			  '--session',
+			  '--print-reply=string',
+			  '--dest=org.gnome.SessionManager',
+			  '/org/gnome/SessionManager',
+			  'org.gnome.SessionManager.RegisterClient',
+			  'string:qtile',
+			  'string:' + x])
+
+'''
+
+@hook.subscribe.client_new
+def dialogs(window):
+	if(window.window.get_wm_type() == 'dialog'
+	   or window.window.get_wm_transient_for()):
+		window.floating = True
+
 ##-> Theme + widget options
 class Theme(object):
 	bar = {
@@ -104,7 +133,7 @@ screens = [Screen(top = bar.Bar([
 # Super_L (the Windows key) is typically bound to mod4 by default, so we use
 # that here.
 mod = "mod4"
-
+alt = "mod1"
 # The keys variable contains a list of all of the keybindings that qtile will
 # look through each time there is a key pressed.
 keys = [
@@ -112,9 +141,11 @@ keys = [
 	# gets hosed (which happens if you unplug and replug your usb keyboard
 	# sometimes, or on system upgrades). This way you can still log back out
 	# and in gracefully.
-	Key(["shift", "mod1"], "q",  lazy.shutdown()),
+	Key([mod, 'control'], 'l', lazy.spawn('gnome-screensaver-command -l')),
+	
+	#Key(["mod1", "shift"], "l", lazy.logout()),  #lazy.spawn('gnome-session-save --force-logout')),
 	# shutdown
-	Key(["mod1", "shift"], "q", lazy.spawn('sudo shutdown -h 0')),
+	Key([alt, "control"], "q", lazy.shutdown()), #spawn('sudo shutdown -h now')),
 	# restart qtile
 	Key([mod, "shift"], "r",     lazy.restart()),
 
