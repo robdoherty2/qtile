@@ -7,7 +7,8 @@
 #
 #    python config.py
 
-from libqtile.manager import Key, Screen, Group, Drag, Click
+#from libqtile.manager import Key, Screen, Group, Drag, Click
+from libqtile.config import Key, Screen, Group, Drag, Click
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 
@@ -43,7 +44,7 @@ def dialogs(window):
 ##-> Theme + widget options
 class Theme(object):
 	bar = {
-		'size': 24,
+		'size': 26,
 		'background': '15181a',
 	}
 	widget = {
@@ -145,7 +146,7 @@ keys = [
 	
 	#Key(["mod1", "shift"], "l", lazy.logout()),  #lazy.spawn('gnome-session-save --force-logout')),
 	# shutdown
-	Key([alt, "control"], "q", lazy.shutdown()), #spawn('sudo shutdown -h now')),
+	Key([alt, "control"], "q", lazy.shutdown()), #lazy.spawn('sudo shutdown -P 0')),
 	# restart qtile
 	Key([mod, "shift"], "r",     lazy.restart()),
 
@@ -172,7 +173,7 @@ keys = [
 	# start specific apps
 	Key([mod], "f",              lazy.spawn("firefox")),
 	Key([mod], "c",              lazy.spawn("google-chrome")),
-	Key([mod], "e",              lazy.spawn("emacs")),	    
+	Key([mod], "e",              lazy.spawn("emacs24")),
 	Key([mod], "Return",         lazy.spawn("gnome-terminal")),
 
 	# Change the volume if your keyboard has special volume keys.
